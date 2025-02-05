@@ -1,6 +1,8 @@
 import allure
 import pytest
-from data import CourierData, Courier
+from data import AnswerMessage
+from helpers import CourierData, Courier
+
 
 class TestSignInCourier:
     @allure.title('Проверка успешной авторизации курьера')
@@ -16,7 +18,7 @@ class TestSignInCourier:
     def test_sign_in_courier_failure_without_login_or_password(self, data):
         response = Courier.login_courier_and_get_courier_data(data)
 
-        assert response.status_code == 400 and response.json()['message'] == 'Недостаточно данных для входа'
+        assert response.status_code == 400 and response.json()['message'] == AnswerMessage.message_sign_in_400
 
     @allure.title('Проверка возвращения ошибки, если указан неправильный логин или пароль')
     @allure.description('Отправляем запрос и проверяем, что если неправильно указать логин или пароль, то система вернёт ошибку')
@@ -24,7 +26,7 @@ class TestSignInCourier:
     def test_sign_in_courier_failure_with_incorrect_login_or_password(self, data):
         response = Courier.login_courier_and_get_courier_data(data)
 
-        assert response.status_code == 404 and response.json()['message'] == 'Учетная запись не найдена'
+        assert response.status_code == 404 and response.json()['message'] == AnswerMessage.message_sign_in_404
 
     @allure.title('Проверка получения id курьера при успешной авторизации')
     @allure.description('Отправляем запрос и проверяем, что успешный запрос возвращает id')
@@ -35,7 +37,6 @@ class TestSignInCourier:
         }
 
         response = Courier.login_courier_and_get_courier_data(payload)
-        r = response.json()
 
-        assert 457586 == r["id"]
+        assert response.json()["id"] == 457586
 

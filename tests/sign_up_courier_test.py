@@ -2,7 +2,8 @@ import allure
 import pytest
 import requests
 from urls import Urls
-from data import CourierData, Courier
+from data import AnswerMessage
+from helpers import CourierData, Courier
 
 
 class TestSignUpCourier:
@@ -19,7 +20,7 @@ class TestSignUpCourier:
     def test_courier_creation_failure_for_already_registered(self, courier):
         response_courier_already_registered = Courier.register_courier_and_get_courier_data()["response"]
 
-        assert response_courier_already_registered.status_code == 409 and response_courier_already_registered.json()['message'] ==  'Этот логин уже используется. Попробуйте другой.'
+        assert response_courier_already_registered.status_code == 409 and response_courier_already_registered.json()['message'] == AnswerMessage.message_sign_up_409
 
     @allure.title('Проверка возвращения ошибки, если не указан логин или пароль')
     @allure.description('Отправляем запрос и проверяем, что если логина или пароля нет, запрос возвращает ошибку')
@@ -27,7 +28,7 @@ class TestSignUpCourier:
     def test_courier_creation_failure_without_login_or_passport(self, data):
         response = requests.post(Urls.COURIER, data=data)
 
-        assert response.status_code == 400 and response.json()['message'] == 'Недостаточно данных для создания учетной записи'
+        assert response.status_code == 400 and response.json()['message'] == AnswerMessage.message_sign_up_400
 
     @allure.title('Проверка возвращения правильного кода ответа при успешной регистрации')
     @allure.description('Отправляем запрос и проверяем, что запрос возвращает правильный код ответа')
@@ -48,4 +49,4 @@ class TestSignUpCourier:
     def test_courier_creation_failure_with_existing_login(self):
         response_courier_with_existing_login = requests.post(Urls.COURIER, data=CourierData.data_with_existing_login)
 
-        assert response_courier_with_existing_login.status_code == 409 and response_courier_with_existing_login.json()['message'] == 'Этот логин уже используется. Попробуйте другой.'
+        assert response_courier_with_existing_login.status_code == 409 and response_courier_with_existing_login.json()['message'] == AnswerMessage.message_sign_up_409

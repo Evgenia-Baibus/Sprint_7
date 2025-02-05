@@ -16,6 +16,7 @@
 * [urls.py](urls.py) - файл с эндроинтами
 * [allure_results](allure_results) - каталог с отчетом тестирования
 * [conftest.py](conftest.py) - файл с фикстурами
+* [helpers.py](helpers.py) - файл с вспомогательными методами и классами
 
 ## Запуск тестов
 

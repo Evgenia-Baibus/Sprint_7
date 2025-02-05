@@ -1,5 +1,5 @@
 import pytest
-from data import Courier
+from helpers import Courier
 
 
 @pytest.fixture
